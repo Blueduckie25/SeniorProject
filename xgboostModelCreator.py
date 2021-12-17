@@ -46,6 +46,7 @@ param = {
     'tree_method': 'gpu_hist',
     'predictor': 'gpu_predictor',
     'learning_rate': 2,
+    'objective': 'binary:logistic',
     'eta': 0.3,
     'max_depth': 5,
     'tree_method' : "gpu_hist"
@@ -57,12 +58,8 @@ xg_reg = xgb.train(param, dtrain, steps, evals=[(dtrain, 'train')])
 
 xg_reg.save_model('model.txt')
 
-#xg_reg = xgb.XGBRegressor(objective='reg:linear', colsample_bytree = 0.3, learning_rate = 0.2, max_depth = 5, alpha = 10, n_estimators = 20, tree_method="gpu_hist", enable_categorical = "TRUE", use_label_encoder=False)
-
 preds = xg_reg.predict(dtest)
 best_preds = np.asarray([np.argmax(line) for line in preds])
-
-print(preds)
 
 print("Precision = {}".format(precision_score(y_test, best_preds, average='macro')))
 print("Recall = {}".format(recall_score(y_test, best_preds, average='macro')))
@@ -72,7 +69,9 @@ Xnew = hosp.iloc[0:1, :-1]
 
 dnew = xgb.DMatrix(Xnew, enable_categorical=True)
 
-print(dnew.get_label())
 
 predsNew = xg_reg.predict(dnew)
+
+predsNew = predsNew < 0.5
+
 print(predsNew)
