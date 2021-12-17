@@ -41,6 +41,7 @@ def testPatient():
     print(dnew.get_label())
 
     predsNew = loaded_model.predict(dnew)
+    predsNew = predsNew < 0.5
     print(predsNew)
     resultLabel.config(text = predsNew)
 
