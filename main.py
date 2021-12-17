@@ -32,18 +32,17 @@ hosp.I10_PR1 = hosp.I10_PR1.cat.codes
 hosp.PSTATE = hosp.PSTATE.cat.codes
 
 def testPatient():
-    #hosp.at[hosp.iloc[(hosp['fName'] == nameEntryF.get()) & (hosp['lName'] == nameEntryL.get()) & (hosp['Birthdate'] == bDayEntry.get())], 'I10_PR1']
+    hosp.at[hosp.iloc[(hosp['fName'] == nameEntryF.get()) & (hosp['lName'] == nameEntryL.get()) & (hosp['Birthdate'] == bDayEntry.get())], 'I10_PR1']
 
-    #Xnew = hosp.iloc[(hosp['fName'] == nameEntryF.get()) & (hosp['lName'] == nameEntryL.get()) & (hosp['Birthdate'] == bDayEntry.get()), :-1].values
-    Xnew = hosp.iloc[0:1, :-1]
-    print(Xnew)
+    Xnew = hosp.iloc[(hosp['fName'] == nameEntryF.get()) & (hosp['lName'] == nameEntryL.get()) & (hosp['Birthdate'] == bDayEntry.get()), :-1].values
+    #Xnew = hosp.iloc[0:1, :-1]
     dnew = xgb.DMatrix(Xnew, enable_categorical=True)
 
     print(dnew.get_label())
 
     predsNew = loaded_model.predict(dnew)
     print(predsNew)
-    resultLabel.config(text = '0')
+    resultLabel.config(text = predsNew)
 
 
 root = Tk()
